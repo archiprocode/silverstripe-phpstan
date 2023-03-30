@@ -102,3 +102,9 @@ services:
         class: Syntro\SilverstripePHPStan\Reflection\ReadWritePropertiesExtension
         tags:
             - phpstan.properties.readWriteExtension
+
+    # hasExtension() check adds Extension Methods
+    -
+        class:  Syntro\SilverstripePHPStan\Type\HasExtensionMethodTypeSpecifier
+        tags:
+            - phpstan.typeSpecifier.methodTypeSpecifyingExtension

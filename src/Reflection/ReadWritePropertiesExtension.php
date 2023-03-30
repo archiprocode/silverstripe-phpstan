@@ -26,8 +26,7 @@ class ReadWritePropertiesExtension implements \PHPStan\Rules\Properties\ReadWrit
     public function isAlwaysRead(PropertyReflection $property, string $propertyName): bool
     {
         return
-            $this->containsConfigBlock($property) &&
-            $this->classUsesConfigTrait($property);
+            $this->containsConfigBlock($property);
     }
 
     /**
@@ -40,8 +39,7 @@ class ReadWritePropertiesExtension implements \PHPStan\Rules\Properties\ReadWrit
     public function isAlwaysWritten(PropertyReflection $property, string $propertyName): bool
     {
         return
-            $this->containsConfigBlock($property) &&
-            $this->classUsesConfigTrait($property);
+            $this->containsConfigBlock($property);
     }
 
     /**
@@ -54,8 +52,7 @@ class ReadWritePropertiesExtension implements \PHPStan\Rules\Properties\ReadWrit
     public function isInitialized(PropertyReflection $property, string $propertyName): bool
     {
         return
-            $this->containsConfigBlock($property) &&
-            $this->classUsesConfigTrait($property);
+            $this->containsConfigBlock($property);
     }
 
     /**
@@ -67,18 +64,5 @@ class ReadWritePropertiesExtension implements \PHPStan\Rules\Properties\ReadWrit
     public function containsConfigBlock(PropertyReflection $property): bool
     {
         return !!strpos($property->getDocComment(), '@config');
-    }
-
-    /**
-     * classUsesConfigTrait - check if the class defining the property is using
-     * the configurable trait
-     *
-     * @param  PropertyReflection $property the property to check
-     * @return bool
-     */
-    public function classUsesConfigTrait(PropertyReflection $property): bool
-    {
-        $classReflection = $property->getDeclaringClass();
-        return $classReflection->hasTraitUse(Configurable::class)  || $classReflection->isSubclassOf(Extension::class);
     }
 }

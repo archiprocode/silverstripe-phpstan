@@ -2,6 +2,7 @@
 
 namespace Syntro\SilverstripePHPStan\Type;
 
+use Exception;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Analyser\SpecifiedTypes;
@@ -12,9 +13,6 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\TypeCombinator;
-use PHPUnit\Util\Type;
-use SilverStripe\Core\Extensible;
-use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ViewableData;
 use Syntro\SilverstripePHPStan\Utility;
 
@@ -23,7 +21,7 @@ class HasExtensionMethodTypeSpecifier implements MethodTypeSpecifyingExtension, 
     /**
      * @var TypeSpecifier
      */
-    private  $typeSpecifier;
+    private $typeSpecifier;
 
     public function getClass(): string
     {
@@ -33,26 +31,26 @@ class HasExtensionMethodTypeSpecifier implements MethodTypeSpecifyingExtension, 
     public function isMethodSupported(MethodReflection $methodReflection, MethodCall $node, TypeSpecifierContext $context): bool
     {
         return $methodReflection->getName() === 'hasExtension'
-            && $context->true()
+            && $context->truthy()
             && isset($node->getArgs()[0]);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
     {
         $expr = $node->getArgs()[0]->value;
         $extension = Utility::getTypeFromVariable($expr, $methodReflection);
-        $type = TypeCombinator::intersect(new ThisType($methodReflection->getDeclaringClass()),$extension);
-        return $this->typeSpecifier->create($expr, $type, TypeSpecifierContext::createTrue());
+        $type = TypeCombinator::union($scope->getType($node->var), $extension);
+        return $this->typeSpecifier->create($node->var, $type, TypeSpecifierContext::createTrue(),true);
     }
 
     /**
-     * @param TypeSpecifier $typeSpecifiera
+     * @param TypeSpecifier $typeSpecifier
      * @return void
      */
-    public function setTypeSpecifier(TypeSpecifier $typeSpecifier) : void
+    public function setTypeSpecifier(TypeSpecifier $typeSpecifier): void
     {
         $this->typeSpecifier = $typeSpecifier;
     }

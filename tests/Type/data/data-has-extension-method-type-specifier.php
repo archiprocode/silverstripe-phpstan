@@ -19,7 +19,8 @@ class FooDataExtension extends DataExtension
         $foo = new Foo();
         if ($foo->hasExtension(\DataHasExtensionMethodTypeSpecifierNamespace\FooDataExtension::class)) {
             assertType(
-                sprintf(
+                sprintf('%s|%s',
+                    \DataHasExtensionMethodTypeSpecifierNamespace\Foo::class,
                     \DataHasExtensionMethodTypeSpecifierNamespace\FooDataExtension::class
                 ),
                 $foo

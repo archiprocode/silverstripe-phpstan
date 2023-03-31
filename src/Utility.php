@@ -117,7 +117,13 @@ class Utility
         return new ObjectType($classNameOrLabel);
     }
 
-    public static function getTypeFromVariable(NodeAbstract $node, MethodReflection $methodOrFunctionReflection): Type
+    /**
+     * @param NodeAbstract $node
+     * @param MethodReflection|FunctionReflection $methodOrFunctionReflection
+     * @return Type
+     * @throws Exception
+     */
+    public static function getTypeFromVariable(NodeAbstract $node, $methodOrFunctionReflection): Type
     {
         $class = '';
         if ($node instanceof Arg) {

@@ -108,3 +108,9 @@ services:
         class:  Syntro\SilverstripePHPStan\Type\HasExtensionMethodTypeSpecifier
         tags:
             - phpstan.typeSpecifier.methodTypeSpecifyingExtension
+
+    # has_extension() check adds Extension Methods
+    -
+        class:  Syntro\SilverstripePHPStan\Type\HasExtensionFunctionTypeSpecifier
+        tags:
+            - phpstan.typeSpecifier.functionTypeSpecifyingExtension

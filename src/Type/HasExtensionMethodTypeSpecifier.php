@@ -11,11 +11,25 @@ use PHPStan\Analyser\TypeSpecifierAwareExtension;
 use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
-use PHPStan\Type\ThisType;
 use PHPStan\Type\TypeCombinator;
 use SilverStripe\View\ViewableData;
 use Syntro\SilverstripePHPStan\Utility;
 
+
+/**
+ * Class HasExtensionMethodTypeSpecifier
+ * @package Syntro\SilverstripePHPStan\Type
+ *
+ * This type specifier allows for the following:
+ * $tree = new SiteTree();
+ * if ($tree->hasExtension(Versioned::class)) {
+ *  // $tree is now SiteTree|Versioned
+ * }
+ *
+ * Note that this only works if your class extends ViewableData. It's not
+ * possible to do this for any class that uses Extensible.
+ *
+ */
 class HasExtensionMethodTypeSpecifier implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
 {
     /**

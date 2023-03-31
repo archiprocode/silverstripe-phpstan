@@ -117,7 +117,13 @@ class Utility
         return new ObjectType($classNameOrLabel);
     }
 
-    public static function getTypeFromVariable(NodeAbstract $node, MethodReflection $methodOrFunctionReflection): Type
+    /**
+     * @param NodeAbstract $node
+     * @param MethodReflection|FunctionReflection $methodOrFunctionReflection
+     * @return Type
+     * @throws Exception
+     */
+    public static function getTypeFromVariable(NodeAbstract $node, $methodOrFunctionReflection): Type
     {
         $class = '';
         if ($node instanceof Arg) {
@@ -127,7 +133,8 @@ class Utility
         if ($node instanceof String_) {
             // Handle string: 'HomePage'
             $class = $node->value;
-        } else if ($node instanceof ClassConstFetch) {
+        }
+        else if ($node instanceof ClassConstFetch) {
             // Handle type: 'HomePage::class'
             $class = (string)$node->class;
         } else if ($node instanceof Variable) {

@@ -30,7 +30,7 @@ class HasExtensionFunctionTypeSpecifier implements FunctionTypeSpecifyingExtensi
      */
     public function isFunctionSupported(FunctionReflection $functionReflection, FuncCall $node, TypeSpecifierContext $context): bool
     {
-        return preg_match('/has_extension$/', $functionReflection->getName())
+        return 'has_extension' === $functionReflection->getName()
             && $context->truthy()
             && count($node->getArgs()) === 2;
     }
